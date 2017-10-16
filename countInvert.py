@@ -13,33 +13,33 @@ def mergeandcount(lft, rgt):
 		Output: tuple (number inversions, sorted combined sequence)
 	"""
 
-	if lft is None:
+	if lft is None: #if empty return No Inversions
 		return 0, rgt
 	if rgt is None:
 		return 0, lft
-	l = []
+	l = [] #initialize variables
 	inv = 0
-	lft = deque(lft)
+	lft = deque(lft) 
 	rgt = deque(rgt)
 
-	while len(rgt) != 0 or len(lft) != 0:
-		if len(lft) == 0:
+	while len(rgt) != 0 or len(lft) != 0: #iterate over both lists
+		if len(lft) == 0: #check if lft done
 			l.append(rgt.popleft())
 			inv = inv + 1
 			continue
-		if len(rgt) == 0:
+		if len(rgt) == 0: #check if rgt done
 			l.append(lft.popleft())
 			continue
 
-		a = rgt.popleft()
+		a = rgt.popleft() #pull top off lists
 		b = lft.popleft()
 
-		if a < b:
-			l.append(a)
+		if a < b: # check for invertions 
+			l.append(a) # add correct to list
 			lft.appendleft(b)
 		else:
-			print b, "conflicts with", [a] + list(rgt)
-			inv = inv + len(lft)
+			print b, "conflicts with", [a] + list(rgt) #print conflictions
+			inv = inv + len(lft) # sum invertions for sorted list
 			l.append(b)
 			rgt.appendleft(a)
 
@@ -60,14 +60,14 @@ def sortandcount(seq):
 		Input: ordered sequence seq
 		Output: tuple (number inversions, sequence)
 	"""
-	if len(seq) == 1:
+	if len(seq) == 1: #Base case
 		return 0, seq
 
 	div = len(seq)/2
 	#print div
-	ra, A = sortandcount(seq[div:])
-	rb, B = sortandcount(seq[:div])
-	rab, seqp = mergeandcount(A,B)
+	ra, A = sortandcount(seq[div:]) #go left
+	rb, B = sortandcount(seq[:div]) #go rgt
+	rab, seqp = mergeandcount(A,B) #merge
 	return ra+rb+rab, seqp
 
 
